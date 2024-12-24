@@ -31,7 +31,11 @@ final class MBAdaptyPaywall<T extends IMBAdaptyRemoteConfig<T>,
   /// Custom Remote Configuration model inherited from [IMBAdaptyRemoteConfig].
   final T? remoteConfig;
 
+  /// Custom Product Configuration model inherited from [IMBAdaptyProductConfig].
   final R? productConfigs;
+
+  /// Original paywall model used to create this instance.
+  final AdaptyPaywall adaptyPaywall;
 
   MBAdaptyPaywall({
     required this.placementId,
@@ -41,6 +45,7 @@ final class MBAdaptyPaywall<T extends IMBAdaptyRemoteConfig<T>,
     required this.revision,
     required this.hasViewConfiguration,
     required this.locale,
+    required this.adaptyPaywall,
     this.remoteConfig,
     this.productConfigs,
   });
@@ -50,6 +55,7 @@ final class MBAdaptyPaywall<T extends IMBAdaptyRemoteConfig<T>,
     required T remoteConfigModel,
   }) {
     return MBAdaptyPaywall<T, R>(
+      adaptyPaywall: adaptyPaywall,
       placementId: adaptyPaywall.placementId,
       name: adaptyPaywall.name,
       abTestName: adaptyPaywall.abTestName,
@@ -74,6 +80,7 @@ final class MBAdaptyPaywall<T extends IMBAdaptyRemoteConfig<T>,
 
   @override
   List<Object?> get props => [
+        adaptyPaywall,
         placementId,
         name,
         abTestName,
@@ -95,8 +102,10 @@ final class MBAdaptyPaywall<T extends IMBAdaptyRemoteConfig<T>,
     String? locale,
     T? remoteConfig,
     R? productConfigs,
+    AdaptyPaywall? adaptyPaywall,
   }) {
     return MBAdaptyPaywall<T, R>(
+      adaptyPaywall: adaptyPaywall ?? this.adaptyPaywall,
       placementId: placementId ?? this.placementId,
       name: name ?? this.name,
       abTestName: abTestName ?? this.abTestName,
