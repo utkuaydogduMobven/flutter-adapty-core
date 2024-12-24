@@ -36,18 +36,18 @@ final class MBAdaptyGateService {
         fetchPolicy: fetchPolicy,
         loadTimeout: loadTimeout,
       );
-      MBAdaptyPaywall<T, R> paywall = MBAdaptyPaywall<T, R>.fromAdaptyPaywall(
+      MBAdaptyPaywall<T, R> mbPaywall = MBAdaptyPaywall<T, R>.fromAdaptyPaywall(
         adaptyPaywall: adaptyPaywall,
         remoteConfigModel: remoteConfigModel,
       );
       if (withProductConfigs) {
         List<AdaptyPaywallProduct> products = await getPaywallProducts(
-          paywall: adaptyPaywall,
+          paywall: mbPaywall,
         );
-        return paywall.getWithProductConfigs(products: products);
+        return mbPaywall.getWithProductConfigs(products: products);
       }
 
-      return paywall;
+      return mbPaywall;
     } on Error {
       rethrow;
     }
@@ -99,9 +99,9 @@ final class MBAdaptyGateService {
       );
 
   Future<List<AdaptyPaywallProduct>> getPaywallProducts({
-    required AdaptyPaywall paywall,
+    required MBAdaptyPaywall paywall,
   }) async =>
-      await _adaptyCore.getPaywallProducts(paywall: paywall);
+      await _adaptyCore.getPaywallProducts(paywall: paywall.adaptyPaywall);
 
   Future<void> logShowOnboarding({
     String? name,
@@ -114,6 +114,6 @@ final class MBAdaptyGateService {
         screenOrder: screenOrder,
       );
 
-  Future<void> logShowPaywall({required AdaptyPaywall paywall}) async =>
-      await _adaptyCore.logShowPaywall(paywall: paywall);
+  Future<void> logShowPaywall({required MBAdaptyPaywall paywall}) async =>
+      await _adaptyCore.logShowPaywall(paywall: paywall.adaptyPaywall);
 }
